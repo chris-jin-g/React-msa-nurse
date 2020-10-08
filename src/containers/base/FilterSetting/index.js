@@ -1,21 +1,57 @@
 import React, { Fragment } from 'react';
 import moment from 'moment';
-import { Row, Col, Input, Select, Avatar, DatePicker } from 'antd';
+import {
+  Row,
+  Col,
+  Button,
+  Input,
+  Select,
+  Avatar,
+  DatePicker,
+  Typography
+} from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 
-import {
-  PRIMARY_TEXT_DARK,
-  PRIMARY_LIGHT_BLUE,
-  SECONDARY_GREY
-} from 'lib/utils/colors';
+import { PRIMARY_LIGHT_BLUE } from 'lib/utils/colors';
 
-import StyledText from 'components/common/StyledText';
-import HeaderBody from 'components/HeaderBody';
-import HeaderItem from 'components/common/HeaderItem';
 import SettingWrapper from 'components/common/SettingWrapper';
 import CustomButton from 'components/common/CustomButton';
 import TextButton from 'components/common/TextButton';
 import messages from './messages';
+
+const { Title, Text } = Typography;
+
+const clients = ['All clients', 'Alexa tenuiri', 'Saraf basarf'];
+const claiments = [
+  'All claiments',
+  'Disabled',
+  'Enabled',
+  'Lock Status',
+  'Normal'
+];
+const statuses = ['All statuses', 'disabled', 'Enabled', 'Lock'];
+const Assignees = [
+  {
+    name: 'Robert C',
+    avatar:
+      'http://www.cetaceanstechlab.com/theme/flingo/tf-demo/assets/images/user/250/01.jpg'
+  },
+  {
+    name: 'Steven James',
+    avatar:
+      'http://www.cetaceanstechlab.com/theme/flingo/tf-demo/assets/images/user/250/01.jpg'
+  },
+  {
+    name: 'Dinial R',
+    avatar:
+      'http://www.cetaceanstechlab.com/theme/flingo/tf-demo/assets/images/user/250/02.jpg'
+  },
+  {
+    name: 'Antony Gen',
+    avatar:
+      'http://www.cetaceanstechlab.com/theme/flingo/tf-demo/assets/images/user/500/07.jpg'
+  }
+];
 
 const FilterSetting = props => {
   const { Option } = Select;
@@ -26,77 +62,50 @@ const FilterSetting = props => {
   return (
     <Fragment>
       <SettingWrapper>
-        <Row gutter={[16, 0]}>
-          <Col span={24}>
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                padding: '15px 10px'
-              }}
-            >
-              <HeaderBody>
-                <HeaderItem>
-                  <TextButton color={PRIMARY_LIGHT_BLUE}>
-                    <img
-                      src={require('assets/icon/reset.png')}
-                      alt="reset-icon"
-                      style={{
-                        width: '20px',
-                        marginRight: '6px',
-                        transform: 'scaleX(-1)'
-                      }}
-                    />
-                    <StyledText
-                      align={'center'}
-                      size={15}
-                      weight={500}
-                      color={PRIMARY_LIGHT_BLUE}
-                    >
-                      {messages.reset}
-                    </StyledText>
-                  </TextButton>
-                </HeaderItem>
-              </HeaderBody>
+        <Row align="middle" style={{ minHeight: '70px' }}>
+          <Col span={5} offset={1}>
+            <Row start="xs" justify="start">
+              <TextButton color={PRIMARY_LIGHT_BLUE}>
+                <img
+                  src={require('assets/icon/reset.png')}
+                  alt="reset-icon"
+                  style={{
+                    width: '20px',
+                    marginRight: '6px',
+                    transform: 'scaleX(-1)'
+                  }}
+                />
+                <Text level={4} style={{ color: PRIMARY_LIGHT_BLUE }}>
+                  {messages.reset}
+                </Text>
+              </TextButton>
+            </Row>
+          </Col>
 
-              <HeaderBody>
-                <HeaderItem direction={'column'}>
-                  <StyledText align={'center'} size={18} weight={700}>
-                    {messages.filterSettingHeaderTitle}
-                  </StyledText>
-                </HeaderItem>
-              </HeaderBody>
-              <HeaderBody>
-                <TextButton
-                  color={PRIMARY_TEXT_DARK}
-                  onClick={() => props.closeSetting()}
-                >
-                  <StyledText
-                    align={'center'}
-                    size={20}
-                    weight={700}
-                    color={PRIMARY_TEXT_DARK}
-                    style={{
-                      transform: 'scale(1.0, 0.9)',
-                      marginRight: '20px'
-                    }}
-                  >
-                    x
-                  </StyledText>
-                </TextButton>
-              </HeaderBody>
-            </div>
+          <Col span={12}>
+            <Row center="xs" justify="center">
+              <Title level={4}>{messages.filterSettingHeaderTitle}</Title>
+            </Row>
+          </Col>
+
+          <Col span={5}>
+            <Row end="xs" justify="end">
+              <Button type="text" onClick={() => props.closeSetting()}>
+                <Title level={4}>x</Title>
+              </Button>
+            </Row>
           </Col>
         </Row>
+
         <Row>
           <Col span={24} style={{ borderTop: '1px solid #e0dcdc' }}></Col>
         </Row>
         <div style={{ padding: '20px 30px' }}>
           <Row gutter={[16, 12]}>
             <Col span={24}>
-              <StyledText color={SECONDARY_GREY}>
+              <Text level={4} type="secondary">
                 {messages.searchLabel}
-              </StyledText>
+              </Text>
             </Col>
             <Col span={24}>
               <Input
@@ -111,9 +120,9 @@ const FilterSetting = props => {
             <Col span={12}>
               <Row gutter={[12, 8]}>
                 <Col span={24}>
-                  <StyledText color={SECONDARY_GREY}>
+                  <Text level={4} type="secondary">
                     {messages.assigneeLabel}
-                  </StyledText>
+                  </Text>
                 </Col>
                 <Col span={24}>
                   <Select
@@ -123,39 +132,20 @@ const FilterSetting = props => {
                     style={{ width: '100%' }}
                     defaultValue="all"
                   >
-                    <Option value="all">
-                      <Avatar
-                        size={24}
-                        src={
-                          'http://www.cetaceanstechlab.com/theme/flingo/tf-demo/assets/images/user/250/01.jpg'
-                        }
-                      />
-                      <StyledText color={PRIMARY_TEXT_DARK} margin={'10px'}>
-                        All Nurses
-                      </StyledText>
-                    </Option>
-                    <Option value="lucy">
-                      <Avatar
-                        size={24}
-                        src={
-                          'http://www.cetaceanstechlab.com/theme/flingo/tf-demo/assets/images/user/250/02.jpg'
-                        }
-                      />
-                      <StyledText color={PRIMARY_TEXT_DARK} margin={'10px'}>
-                        Alexa Tenorio
-                      </StyledText>
-                    </Option>
-                    <Option value="tom">
-                      <Avatar
-                        size={24}
-                        src={
-                          'http://www.cetaceanstechlab.com/theme/flingo/tf-demo/assets/images/user/500/07.jpg'
-                        }
-                      />
-                      <StyledText color={PRIMARY_TEXT_DARK} margin={'10px'}>
-                        Sarah Vasquez
-                      </StyledText>
-                    </Option>
+                    {Assignees.map((assignee, id) => {
+                      return (
+                        <Option value="all" key={`assignee-${id}`}>
+                          <Avatar size={24} src={assignee.avatar} />
+                          <Text
+                            level={5}
+                            type="secondary"
+                            style={{ marginLeft: '6px' }}
+                          >
+                            {assignee.name}
+                          </Text>
+                        </Option>
+                      );
+                    })}
                   </Select>
                 </Col>
               </Row>
@@ -163,9 +153,9 @@ const FilterSetting = props => {
             <Col span={12}>
               <Row gutter={[12, 8]}>
                 <Col span={24}>
-                  <StyledText color={SECONDARY_GREY}>
+                  <Text level={4} type="secondary">
                     {messages.assignmentLabel}
-                  </StyledText>
+                  </Text>
                 </Col>
                 <Col span={24}>
                   <Select
@@ -175,23 +165,26 @@ const FilterSetting = props => {
                     style={{ width: '100%' }}
                     defaultValue="all"
                   >
-                    <Option value="all">All Statuses</Option>
-                    <Option value="Disabled">Disabled</Option>
-                    <Option value="Enabled">Enabled</Option>
-                    <Option value="Lock Status">Lock Status</Option>
-                    <Option value="Normal">Normal</Option>
+                    {statuses.map((status, id) => {
+                      return (
+                        <Option value="all" key={`status-${id}`}>
+                          {status}
+                        </Option>
+                      );
+                    })}
                   </Select>
                 </Col>
               </Row>
             </Col>
           </Row>
+
           <Row gutter={[12, 24]}>
             <Col span={12}>
               <Row gutter={[12, 8]}>
                 <Col span={24}>
-                  <StyledText color={SECONDARY_GREY}>
+                  <Text level={4} type="secondary">
                     {messages.clientLabel}
-                  </StyledText>
+                  </Text>
                 </Col>
                 <Col span={24}>
                   <Select
@@ -201,19 +194,24 @@ const FilterSetting = props => {
                     style={{ width: '100%' }}
                     defaultValue="all"
                   >
-                    <Option value="all">All Clients</Option>
-                    <Option value="steven">Steven James</Option>
-                    <Option value="william">Art William</Option>
+                    {clients.map((client, id) => {
+                      return (
+                        <Option value="all" key={`client-${id}`}>
+                          {client}
+                        </Option>
+                      );
+                    })}
                   </Select>
                 </Col>
               </Row>
             </Col>
+
             <Col span={12}>
               <Row gutter={[12, 8]}>
                 <Col span={24}>
-                  <StyledText color={SECONDARY_GREY}>
+                  <Text level={4} type="secondary">
                     {messages.climantLabel}
-                  </StyledText>
+                  </Text>
                 </Col>
                 <Col span={24}>
                   <Select
@@ -223,21 +221,26 @@ const FilterSetting = props => {
                     style={{ width: '100%' }}
                     defaultValue="all"
                   >
-                    <Option value="all">All Claimants</Option>
-                    <Option value="lucy">Steven James</Option>
-                    <Option value="tom">Art William</Option>
+                    {claiments.map((claiment, id) => {
+                      return (
+                        <Option value="all" key={`claiments-${id}`}>
+                          {claiment}
+                        </Option>
+                      );
+                    })}
                   </Select>
                 </Col>
               </Row>
             </Col>
           </Row>
+
           <Row gutter={[12, 28]}>
             <Col span={12}>
               <Row gutter={[12, 8]}>
                 <Col span={24}>
-                  <StyledText color={SECONDARY_GREY}>
+                  <Text level={4} type="secondary">
                     {messages.dateFrom}
-                  </StyledText>
+                  </Text>
                 </Col>
                 <Col span={24}>
                   <DatePicker
@@ -251,9 +254,9 @@ const FilterSetting = props => {
             <Col span={12}>
               <Row gutter={[12, 8]}>
                 <Col span={24}>
-                  <StyledText color={SECONDARY_GREY}>
+                  <Text level={4} type="secondary">
                     {messages.dateTo}
-                  </StyledText>
+                  </Text>
                 </Col>
                 <Col span={24}>
                   <DatePicker
@@ -265,18 +268,14 @@ const FilterSetting = props => {
               </Row>
             </Col>
           </Row>
-          <Row>
-            <Col span={24}>
-              <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <CustomButton
-                  backgroundcolor={'#6f66fd'}
-                  color={'#ffffff'}
-                  size={'large'}
-                >
-                  APPLY
-                </CustomButton>
-              </div>
-            </Col>
+          <Row justify="center">
+            <CustomButton
+              backgroundcolor={'#6f66fd'}
+              color={'#ffffff'}
+              size={'large'}
+            >
+              APPLY
+            </CustomButton>
           </Row>
         </div>
       </SettingWrapper>

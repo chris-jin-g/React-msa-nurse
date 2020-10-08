@@ -1,8 +1,8 @@
 const defaultMessage = {
   filterSettingHeaderTitle: 'Filters',
-  searchLabel: 'Search',
+  searchLabel: 'Search by note',
   assigneeLabel: 'Assignee',
-  clientLabel: 'client',
+  clientLabel: 'Client',
   assignmentLabel: 'Assignment Status',
   climantLabel: 'Climant',
   dateFrom: 'Due Date From',

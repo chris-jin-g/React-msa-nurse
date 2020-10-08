@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Fragment, useState, useEffect } from 'react';
-import { Layout } from 'antd';
+import { Row, Col, Layout, Modal, Typography } from 'antd';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import Icon from '@mdi/react';
@@ -11,8 +11,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import {
   PRIMARY_TEXT_DARK,
   PRIMARY_LIGHT_GREEN,
-  PRIMARY_LIGHT,
-  SECONDARY_GREY
+  PRIMARY_LIGHT
 } from 'lib/utils/colors';
 
 import AddAssignForm from 'containers/base/AddAssignForm';
@@ -21,10 +20,7 @@ import FilterSetting from 'containers/base/FilterSetting';
 import CustomToolbar from 'containers/base/CustomCalendarToolbar';
 import NavbarHeader from 'components/Header';
 import FilterWrapper from 'components/FilterWrapper';
-import HeaderBody from 'components/HeaderBody';
 import Devider from 'components/common/Devider';
-import HeaderItem from 'components/common/HeaderItem';
-import StyledText from 'components/common/StyledText';
 import StatusIcon from 'components/common/StatusIcon';
 import HideFullScreen from 'components/common/HideFullScreen';
 import CustomButton from 'components/common/CustomButton';
@@ -32,6 +28,7 @@ import { initEvents } from './data.js';
 import messages from './messages';
 
 const { Content } = Layout;
+const { Title, Text } = Typography;
 const localizer = momentLocalizer(moment);
 
 const Assignmet = () => {
@@ -43,6 +40,14 @@ const Assignmet = () => {
   useEffect(() => {
     setEvents([...events, ...initEvents]);
   }, []);
+
+  const handleSetViewMode = mode => {
+    setViewMode(mode);
+    if (mode === messages.table) {
+      handleShowFilterSetting(false);
+      handleShowAddAssignForm(false);
+    }
+  };
 
   const handleShowFilterSetting = e => {
     if (viewMode !== messages.calendar) return false;
@@ -58,21 +63,23 @@ const Assignmet = () => {
     <Fragment>
       <Layout>
         <NavbarHeader>
-          <HeaderBody>
-            <FilterWrapper>
-              <Icon
-                path={mdiFilterVariant}
-                size={1}
-                onClick={() => handleShowFilterSetting(true)}
-              />
-            </FilterWrapper>
-            <Devider height={67}></Devider>
-
-            <HeaderItem tbl={'none'} mb={'none'}>
-              <StyledText weight={500}>{messages.viewMode}</StyledText>
-            </HeaderItem>
-
-            <HeaderItem>
+          <Col lg={9} md={9} sm={12} xs={12}>
+            <Row justify="start" align="middle">
+              <FilterWrapper>
+                <Icon
+                  path={mdiFilterVariant}
+                  size={1}
+                  onClick={() => handleShowFilterSetting(true)}
+                />
+              </FilterWrapper>
+              <Devider height={67}></Devider>
+              <Title
+                level={5}
+                style={{ margin: '0 0 0 15px' }}
+                className="view-mode"
+              >
+                {messages.viewMode}
+              </Title>
               <Icon
                 path={mdiViewList}
                 size={1}
@@ -81,12 +88,9 @@ const Assignmet = () => {
                     ? PRIMARY_LIGHT_GREEN
                     : PRIMARY_TEXT_DARK
                 }
-                style={{ cursor: 'pointer' }}
-                onClick={() => setViewMode(messages.table)}
+                style={{ cursor: 'pointer', marginLeft: '10px' }}
+                onClick={() => handleSetViewMode(messages.table)}
               />
-            </HeaderItem>
-
-            <HeaderItem>
               <Icon
                 path={mdiViewModule}
                 size={1}
@@ -95,34 +99,44 @@ const Assignmet = () => {
                     ? PRIMARY_LIGHT_GREEN
                     : PRIMARY_TEXT_DARK
                 }
-                style={{ cursor: 'pointer' }}
-                onClick={() => setViewMode(messages.calendar)}
+                style={{ cursor: 'pointer', marginLeft: '10px' }}
+                onClick={() => handleSetViewMode(messages.calendar)}
               />
-            </HeaderItem>
-          </HeaderBody>
+            </Row>
+          </Col>
 
-          <HeaderBody>
-            <HeaderItem direction={'column'} tbl={'none'} mb={'none'}>
-              <StyledText align={'center'} size={18} weight={700}>
-                {messages.headerTitle}
-              </StyledText>
-              <StyledText align={'center'} weight={400} color={SECONDARY_GREY}>
-                {messages.headerSubTitle}
-              </StyledText>
-            </HeaderItem>
-          </HeaderBody>
-          <HeaderBody>
-            <div style={{ display: 'inline-box', width: '100px' }} />
-            <HeaderItem style={{ marginRight: '20px' }}>
+          <Col
+            lg={6}
+            md={6}
+            sm={0}
+            xs={0}
+            style={{ lineHeight: '1.4', flexDirection: 'column' }}
+          >
+            <Title level={4} style={{ margin: '0', textAlign: 'center' }}>
+              {messages.headerTitle}
+            </Title>
+            <Text
+              type="secondary"
+              strong
+              style={{ textAlign: 'center', display: 'block' }}
+            >
+              {messages.headerSubTitle}
+            </Text>
+          </Col>
+
+          <Col span={8}>
+            <Row justify="end">
               <CustomButton
                 size={'large'}
+                style={{ marginRight: '15px' }}
                 icon={<Icon path={mdiPlus} size={1} color={PRIMARY_LIGHT} />}
                 backgroundcolor={PRIMARY_LIGHT_GREEN}
                 onClick={() => handleShowAddAssignForm(true)}
               />
-            </HeaderItem>
-          </HeaderBody>
+            </Row>
+          </Col>
         </NavbarHeader>
+
         <Content className="site-layout" style={{ marginTop: 67 }}>
           {showFilterSetting ? (
             <Fragment>
@@ -138,20 +152,15 @@ const Assignmet = () => {
             ''
           )}
 
-          {showNewAssignForm ? (
-            <Fragment>
-              <AddAssignForm
-                closeSetting={() => handleShowAddAssignForm(false)}
-              />
-              <HideFullScreen
-                zIndex={5}
-                top={'0px'}
-                onClick={() => handleShowAddAssignForm(false)}
-              />
-            </Fragment>
-          ) : (
-            ''
-          )}
+          <Modal
+            bodyStyle={{ padding: '0px', minWidth: '350px' }}
+            visible={showNewAssignForm}
+            onOk={() => handleShowAddAssignForm(true)}
+            onCancel={() => handleShowAddAssignForm(false)}
+            footer=""
+          >
+            <AddAssignForm />
+          </Modal>
 
           {viewMode === messages.calendar ? (
             <Calendar

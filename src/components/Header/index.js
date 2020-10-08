@@ -12,6 +12,7 @@ const NavbarHeader = styled(Header)`
   height: 67px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   border-bottom: 1px solid ${BORDER_GREY_LIGHT};
   background-color: ${PRIMARY_LIGHT};
   z-index: 5;

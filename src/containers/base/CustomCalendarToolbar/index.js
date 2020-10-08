@@ -1,16 +1,14 @@
 import React, { Fragment } from 'react';
-import { Button } from 'antd';
+import { Row, Col, Button, Typography } from 'antd';
 import Toolbar from 'react-big-calendar/lib/Toolbar';
 import Icon from '@mdi/react';
 import { mdiChevronLeft, mdiChevronRight } from '@mdi/js';
 
 import { PRIMARY_TEXT_DARK } from 'lib/utils/colors';
 
-import HeaderBody from 'components/HeaderBody';
-import HeaderItem from 'components/common/HeaderItem';
-import StyledText from 'components/common/StyledText';
 import CustomButton from 'components/common/CustomButton';
 
+const { Text } = Typography;
 export default class CustomToolbar extends Toolbar {
   componentDidMount() {
     const view = this.props.view;
@@ -20,11 +18,15 @@ export default class CustomToolbar extends Toolbar {
   render() {
     return (
       <Fragment>
-        <HeaderBody className="custom-toolbar">
-          <StyledText weight={500} tbl={'none'} mb={'none'}>
-            {this.props.label}
-          </StyledText>
-          <HeaderItem>
+        <Row align="middle" className="custom-toolbar">
+          <Col span="24" style={{ display: 'flex', alignItems: 'center' }}>
+            <Text
+              level={4}
+              style={{ marginRight: '5px' }}
+              className="current-date"
+            >
+              {this.props.label}
+            </Text>
             <CustomButton
               icon={
                 <Icon
@@ -37,8 +39,6 @@ export default class CustomToolbar extends Toolbar {
               border={'none'}
               shape={'circle'}
             />
-          </HeaderItem>
-          <HeaderItem>
             <CustomButton
               icon={
                 <Icon
@@ -51,13 +51,11 @@ export default class CustomToolbar extends Toolbar {
               border={'none'}
               shape={'circle'}
             />
-          </HeaderItem>
-          <HeaderItem>
             <Button size={'large'} onClick={() => this.navigate('TODAY')}>
               {'Today'}
             </Button>
-          </HeaderItem>
-        </HeaderBody>
+          </Col>
+        </Row>
       </Fragment>
     );
   }
